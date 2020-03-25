@@ -133,3 +133,15 @@ STATIC_URL = '/static/'
 AUTHENTICATION_BACKENDS = (
     ('django.contrib.auth.backends.ModelBackend'),
 )
+
+
+# Email Settings
+
+# DataFlair
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.office365.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'alok_kumar@nanduniversity.com'
+EMAIL_HOST_PASSWORD = 'Kishor!1987'
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = True
