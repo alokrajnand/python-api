@@ -37,13 +37,13 @@ def UserViewSet(request, format=None):
         # if both the varification is ok then register the user and redirect to the login page
 
         # this will happen only when the phone otp and mail id varification will be done
-        send_mail(
+        ''' send_mail(
             'Subject here',
             'Here is the message.',
             'alok_kumar@nanduniversity.com',
             ['alokrajnand@gmail.com'],
             fail_silently=False,
-        )
+        ) '''
         serializer = MyUserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
