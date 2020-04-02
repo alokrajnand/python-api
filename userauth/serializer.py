@@ -1,12 +1,14 @@
 from rest_framework import serializers
 from .models import User
+from rest_framework import exceptions
+from django.contrib.auth import authenticate, login
 
 
 class MyUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['user_name', 'phone_number', 'name', 'email_address',
+        fields = ['username', 'phone_number', 'name', 'email_address',
                   'date_of_birth', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 

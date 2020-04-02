@@ -1,3 +1,9 @@
+
+# this is for login and logout authentication
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import login as django_login
+from rest_framework.views import APIView
 from django.shortcuts import render
 # this is to send response to client
 from django.http import HttpResponse, JsonResponse
@@ -10,10 +16,10 @@ from .serializer import *
 from .models import *
 from django.core.mail import send_mail
 
-
 # ****************************************************
 # USER REGISTRATION PROCESS
 # ****************************************************
+
 
 @csrf_exempt
 def UserViewSet(request, format=None):
@@ -53,5 +59,20 @@ def UserViewSet(request, format=None):
 
 
 # **********************************************************
-# Function to send otp to the mail  and the phone number
+# post views for the login and send
 # *********************************************************
+
+
+class LoginViewSet(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(
+            data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'username': user.username,
+            'email': user.email_address
+        })

@@ -16,8 +16,8 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('user_name', 'phone_number', 'name',
-                  'email_address', 'date_of_birth')
+        fields = ('username', 'phone_number', 'email_address', 'name',
+                  'date_of_birth')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -45,7 +45,7 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('user_name', 'phone_number', 'name', 'email_address',
+        fields = ('username', 'phone_number',  'email_address', 'name',
                   'date_of_birth', 'password', 'is_active', 'is_admin')
 
     def clean_password(self):
@@ -63,26 +63,26 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('user_name', 'phone_number', 'name', 'email_address',
+    list_display = ('username', 'phone_number', 'email_address', 'name',
                     'date_of_birth', 'is_active', 'is_staff', 'is_admin')
     list_filter = ('is_admin',)
 
-    search_fields = ('user_name',)
-    ordering = ('user_name',)
+    search_fields = ('username',)
+    ordering = ('username',)
     filter_horizontal = ()
 
     # for the adition of the user from the admin pannel
 
     fieldsets = (
-        (None, {'fields': ('user_name', 'phone_number', 'name',
-                           'email_address', 'date_of_birth', 'password'), }),
+        (None, {'fields': ('username', 'phone_number', 'email_address', 'name',
+                           'date_of_birth', 'password'), }),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('user_name', 'phone_number', 'name', 'email_address', 'date_of_birth', 'password1', 'password2'),
+            'fields': ('username', 'phone_number', 'email_address', 'name', 'date_of_birth', 'password1', 'password2'),
         }),
     )
 
