@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User
+from .models import User, UserProfile
 from rest_framework import exceptions
 from django.contrib.auth import authenticate, login
 
@@ -22,3 +22,14 @@ class MyUserSerializer(serializers.ModelSerializer):
 
 
 # we must have to update the sceanirio for the updating the password also
+
+
+# ******************************************************************
+# profile serializer
+# *******************************************************************
+
+class UserProfileSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = UserProfile
+        fields = "__all__"

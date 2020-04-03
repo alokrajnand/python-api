@@ -66,7 +66,6 @@ class UserAdmin(BaseUserAdmin):
     list_display = ('username', 'phone_number', 'email_address', 'name',
                     'date_of_birth', 'is_active', 'is_staff', 'is_admin')
     list_filter = ('is_admin',)
-
     search_fields = ('username',)
     ordering = ('username',)
     filter_horizontal = ()
@@ -90,6 +89,19 @@ class UserAdmin(BaseUserAdmin):
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
 
+
+class UserProfileAdmin(BaseUserAdmin):
+    list_display = ('username', 'phone_number',
+                    'email_address', 'name', 'date_of_birth')
+    list_filter = ('username',)
+    search_fields = ('username',)
+    ordering = ('username',)
+    filter_horizontal = ()
+
+
+admin.site.register(UserProfile, UserProfileAdmin)
+
+
 # ... and, since we're not using Django's built-in permissions,
 # unregister the Group model from admin.
-admin.site.unregister(Group)
+# admin.site.unregister(Group)

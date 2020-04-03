@@ -6,6 +6,6 @@ from .views import *
 
 urlpatterns = [
     path('register/', UserViewSet),
-    path('login/', LoginViewSet.as_view())
-    # path('login/', LoginViewSet)
+    path('login/', LoginViewSet.as_view()),
+    path('profile/', ProfileViewSet.as_view()),
 ]

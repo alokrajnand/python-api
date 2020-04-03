@@ -1,5 +1,6 @@
 
 # this is for login and logout authentication
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login as django_login
@@ -59,7 +60,7 @@ def UserViewSet(request, format=None):
 
 
 # **********************************************************
-# post views for the login and send
+# post views for the login and send some user information
 # *********************************************************
 
 
@@ -76,3 +77,23 @@ class LoginViewSet(ObtainAuthToken):
             'username': user.username,
             'email': user.email_address
         })
+
+# **********************************************************
+# Logout mechnaism
+# *********************************************************
+
+
+# ******************************************************************
+# To Get profil Information if user is authenticated and logged in
+# *******************************************************************
+
+
+class ProfileViewSet(APIView):
+    #permission_classes = [IsAuthenticated]
+
+    def get(self, request, format=None):
+        user = self.request.user
+        print(user)
+        data = UserProfile.objects.filter(username=user)
+        user = UserProfileSerializer(data, many=True)
+        return Response(user.data)

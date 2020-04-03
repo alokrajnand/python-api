@@ -11,6 +11,9 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
+# **********************************************************
+# Create User Processing
+# *********************************************************
 class MyUserManager(BaseUserManager):
 
     def create_user(self, username, phone_number, name, email_address, date_of_birth, password=None):
@@ -101,7 +104,10 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
-# model for the credential validation
+# **********************************************************
+# mail and phone validation model and processing
+# *********************************************************
+
 class CredentialVarification(models.Model):
     username = models.CharField(max_length=50, unique=True, blank=False)
     phone_number = models.CharField(max_length=50, unique=True, null=False)
@@ -110,6 +116,23 @@ class CredentialVarification(models.Model):
     email_otp_code = models.IntegerField()
     varification_status = models.BooleanField()
     code_sent_counter = models.IntegerField()
+
+    def __str__(self):
+        return self.Email_varification_code
+
+
+# **********************************************************
+# Profile Model
+# *********************************************************
+
+class UserProfile(models.Model):
+    username = models.OneToOneField(
+        User, null=False, on_delete=models.CASCADE)
+    phone_number = models.CharField(max_length=50, unique=True, null=False)
+    email_address = models.CharField(max_length=200, null=True)
+    name = models.CharField(max_length=200)
+    gender = models.CharField(max_length=2)
+    date_of_birth = models.DateField(null=True)
 
     def __str__(self):
         return self.username
