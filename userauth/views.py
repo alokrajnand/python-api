@@ -75,7 +75,7 @@ class LoginViewSet(ObtainAuthToken):
         return Response({
             'token': token.key,
             'username': user.username,
-            'email': user.email_address
+            'name': user.name
         })
 
 # **********************************************************
