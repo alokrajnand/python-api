@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import User, UserProfile
+from .models import *
 from rest_framework import exceptions
 from django.contrib.auth import authenticate, login
 
@@ -32,4 +32,15 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserProfile
+        fields = "__all__"
+
+
+# ******************************************************************
+# profile serializer
+# *******************************************************************
+
+class PostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
         fields = "__all__"

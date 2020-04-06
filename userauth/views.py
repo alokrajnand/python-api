@@ -1,6 +1,6 @@
 
 # this is for login and logout authentication
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login as django_login
@@ -12,6 +12,7 @@ from django.views.decorators.csrf import csrf_exempt  # to resolve csrf issue
 from rest_framework.parsers import JSONParser
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework import viewsets
 # model and serializer import
 from .serializer import *
 from .models import *
@@ -89,7 +90,7 @@ class LoginViewSet(ObtainAuthToken):
 
 
 class ProfileViewSet(APIView):
-    #permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get(self, request, format=None):
         user = self.request.user
@@ -97,3 +98,21 @@ class ProfileViewSet(APIView):
         data = UserProfile.objects.filter(username=user)
         user = UserProfileSerializer(data, many=True)
         return Response(user.data)
+
+
+# ******************************************************************
+# Post
+# *******************************************************************
+
+class PostViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]
+
+    def get(self, request, format=None):
+        data = Post.objects.all()
+        serializer = PostSerializer(data, many=True)
+        return Response(serializer.data)
+
+    def get_detail(self, request, id, format=None):
+        data = Post.objects.filter(id=id)
+        serializer = PostSerializer(data, many=True)
+        return Response(serializer.data)
