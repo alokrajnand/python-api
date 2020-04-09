@@ -1,5 +1,6 @@
 
 # this is for login and logout authentication
+from rest_framework.renderers import JSONRenderer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -112,7 +113,11 @@ class PostViewSet(viewsets.ViewSet):
         serializer = PostSerializer(data, many=True)
         return Response(serializer.data)
 
-    def get_detail(self, request, id, format=None):
-        data = Post.objects.filter(id=id)
-        serializer = PostSerializer(data, many=True)
+    def get_detail(self, request, id):
+        try:
+            post = Post.objects.get(id=id)
+        except Post.DoesNotExist:
+            return HttpResponse(status=404)
+
+        serializer = PostSerializer(post)
         return Response(serializer.data)

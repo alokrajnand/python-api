@@ -150,4 +150,5 @@ class Post(models.Model):
     post_created_date = models.DateField(null=True)
 
     def __str__(self):
-        return self.post_id
+        return self.__all__
+
