@@ -101,23 +101,3 @@ class ProfileViewSet(APIView):
         return Response(user.data)
 
 
-# ******************************************************************
-# Post
-# *******************************************************************
-
-class PostViewSet(viewsets.ViewSet):
-    permission_classes = [AllowAny]
-
-    def get(self, request, format=None):
-        data = Post.objects.all()
-        serializer = PostSerializer(data, many=True)
-        return Response(serializer.data)
-
-    def get_detail(self, request, id):
-        try:
-            post = Post.objects.get(id=id)
-        except Post.DoesNotExist:
-            return HttpResponse(status=404)
-
-        serializer = PostSerializer(post)
-        return Response(serializer.data)

@@ -34,14 +34,3 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = "__all__"
 
-
-# ******************************************************************
-# profile serializer
-# *******************************************************************
-
-class PostSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Post
-        fields = "__all__"
-
