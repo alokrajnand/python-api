@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     #####
     'userauth',
     'course',
-    'post'
+    'post',
+    'school'
 ]
 
 
