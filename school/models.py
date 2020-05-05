@@ -15,19 +15,19 @@ class School(models.Model):
     school_city = models.CharField(max_length=30, null=True)
     school_location = models.CharField(max_length=30, null=True)
     school_pincode = models.IntegerField()
-    School_address = models.CharField(max_length=100, null=True)
-    School_longitude = models.CharField(max_length=100, null=True)
-    School_latitude = models.CharField(max_length=100, null=True)
-    School_map_share_link = models.CharField(max_length=200, null=True)
-    School_type = models.CharField(max_length=30, null=True)
-    School_board = models.CharField(max_length=30, null=True)
-    School_medium = models.CharField(max_length=30, null=True)
-    School_owned_by = models.CharField(max_length=30, null=True)
-    School_phone_number = models.CharField(max_length=30, null=True)
-    School_website_url = models.CharField(max_length=50, null=True)
-    School_mailing_address = models.CharField(max_length=50, null=True)
-    School_about = models.CharField(max_length=2000, null=True)
-    School_admission_process = models.CharField(max_length=1000, null=True)
+    school_address = models.CharField(max_length=100, null=True)
+    school_longitude = models.CharField(max_length=100, null=True)
+    school_latitude = models.CharField(max_length=100, null=True)
+    school_map_share_link = models.CharField(max_length=200, null=True)
+    school_type = models.CharField(max_length=30, null=True)
+    school_board = models.CharField(max_length=30, null=True)
+    school_medium = models.CharField(max_length=30, null=True)
+    school_owned_by = models.CharField(max_length=30, null=True)
+    school_phone_number = models.CharField(max_length=30, null=True)
+    school_website_url = models.CharField(max_length=50, null=True)
+    school_mailing_address = models.CharField(max_length=50, null=True)
+    school_about = models.CharField(max_length=2000, null=True)
+    school_admission_process = models.CharField(max_length=1000, null=True)
     school_start_date = models.DateField(null=True)
     created_dt = models.DateTimeField(default=datetime.now, null=True)
     updated_dt = models.DateTimeField(default=datetime.now, null=True)
@@ -37,7 +37,7 @@ class School(models.Model):
 
 
 # **********************************************************
-# School  Model
+# Fee  Model
 # *********************************************************
 
 
@@ -54,6 +54,10 @@ class Fee(models.Model):
         return self.__all__
 
 
+# **********************************************************
+# Gallery  Model
+# *********************************************************
+
 class Gallery(models.Model):
     school_header = models.ForeignKey(
         School, to_field='school_header', on_delete=models.CASCADE)
@@ -61,6 +65,9 @@ class Gallery(models.Model):
     school_thumbnail_image_url = models.CharField(max_length=100, null=True)
     school_image_alt = models.CharField(max_length=100, null=True)
     school_image_desc = models.CharField(max_length=100, null=True)
+    small = models.CharField(max_length=100, null=True)
+    medium = models.CharField(max_length=100, null=True)
+    big = models.CharField(max_length=100, null=True)
     created_dt = models.DateTimeField(default=datetime.now, null=True)
     updated_dt = models.DateTimeField(default=datetime.now, null=True)
 

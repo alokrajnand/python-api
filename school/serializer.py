@@ -15,11 +15,18 @@ class SchoolSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class SchoolFeeSerializer(serializers.ModelSerializer):
+# ******************************************************************
+# School Fee serializer
+# *******************************************************************
 
+class SchoolFeeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fee
         fields = "__all__"
+
+# ******************************************************************
+# School Gallery serializer
+# *******************************************************************
 
 
 class SchoolGallerySerializer(serializers.ModelSerializer):

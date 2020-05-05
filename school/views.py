@@ -18,7 +18,7 @@ from rest_framework import viewsets
 from .serializer import *
 from .models import *
 from django.core.mail import send_mail
-
+from django.core.exceptions import ObjectDoesNotExist
 # Create your views here.
 
 
@@ -56,42 +56,42 @@ class SchoolFeeViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
     def get_detail(self, request, name):
-        try:
-            data = Fee.objects.get(school_header=name)
-            serializer = SchoolFeeSerializer(data)
-            return Response(serializer.data)
-        except School.DoesNotExist:
+        data = Fee.objects.filter(school_header=name)
+        if (data.count() == 0):
             return Response({
                 'message': 'No Data',
                 'status': 400
             })
+        else:
+            serializer = SchoolFeeSerializer(data, many=True)
+            return Response(serializer.data)
 
 
 class SchoolGalleryViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
     def get_detail(self, request, name):
-        try:
-            data = Gallery.objects.get(school_header=name)
-            serializer = SchoolGallerySerializer(data)
-            return Response(serializer.data)
-        except School.DoesNotExist:
+        data = Gallery.objects.filter(school_header=name)
+        if (data.count() == 0):
             return Response({
                 'message': 'No Data',
                 'status': 400
             })
+        else:
+            serializer = SchoolGallerySerializer(data,  many=True)
+            return Response(serializer.data)
 
 
 class SchoolFacilityViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
     def get_detail(self, request, name):
-        try:
-            data = Facility.objects.get(school_header=name)
-            serializer = SchoolFacilitySerializer(data)
-            return Response(serializer.data)
-        except School.DoesNotExist:
+        data = Facility.objects.filter(school_header=name)
+        if (data.count() == 0):
             return Response({
                 'message': 'No Data',
                 'status': 400
             })
+        else:
+            serializer = SchoolFacilitySerializer(data)
+            return Response(serializer.data)
