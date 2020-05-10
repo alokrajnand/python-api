@@ -100,4 +100,3 @@ class ProfileViewSet(APIView):
         user = UserProfileSerializer(data, many=True)
         return Response(user.data)
 
-

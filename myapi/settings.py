@@ -29,7 +29,7 @@ ALLOWED_HOSTS = []
 AUTH_USER_MODEL = 'userauth.User'
 
 ###
-CORS_ORIGIN_ALLOW_ALL = False
+CORS_ORIGIN_ALLOW_ALL = True
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:4200',
 )

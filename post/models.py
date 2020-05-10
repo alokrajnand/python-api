@@ -10,7 +10,8 @@ from datetime import datetime
 
 class Post(models.Model):
     post_header = models.CharField(max_length=100, unique=True, null=False)
-    post_Name = models.CharField(max_length=100, unique=True, null=True)
+    post_name = models.CharField(max_length=100, unique=True, null=True)
+    post_short_desc = models.CharField(max_length=200, null=True)
     post_content = models.CharField(max_length=1000, null=True)
     post_author = models.CharField(max_length=50, null=True)
     post_created_dt = models.DateTimeField(default=datetime.now, null=True)

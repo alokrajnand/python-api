@@ -6,5 +6,5 @@ from .views import *
 
 urlpatterns = [
     path('', PostViewSet.as_view({'get': 'get'})),
-    path('<name>/', PostViewSet.as_view({'get': 'get_detail'})),
+    path('<name>', PostViewSet.as_view({'get': 'get_detail'})),
 ]

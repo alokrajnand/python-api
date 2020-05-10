@@ -34,6 +34,8 @@ class PostViewSet(viewsets.ViewSet):
         serializer = PostSerializer(data, many=True)
         return Response(serializer.data)
 
+    permission_classes = [AllowAny]
+
     def get_detail(self, request, name):
         post = Post.objects.get(post_header=name)
         serializer = PostSerializer(post)
