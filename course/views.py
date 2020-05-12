@@ -21,7 +21,7 @@ from django.core.mail import send_mail
 
 
 # ******************************************************************
-# Post
+# Course
 # *******************************************************************
 
 class CourseViewSet(viewsets.ViewSet):
@@ -44,14 +44,26 @@ class CourseViewSet(viewsets.ViewSet):
 
     def get_faq_detail(self, request, name):
         data = Faq.objects.filter(course_header=name)
-        serializer = CourseFaqSerializer(data, many=True)
-        return Response(serializer.data)
+        if (data.count() == 0):
+            return Response({
+                'message': 'No Data',
+                'status': 400
+            })
+        else:
+            serializer = CourseFaqSerializer(data, many=True)
+            return Response(serializer.data)
 
 
 class LessonViewSet(viewsets.ViewSet):
     permission_classes = [AllowAny]
 
     def get_detail(self, request, name):
-        data = Lesson.objects.get(course_header=name)
-        serializer = LessonSerializer(data)
-        return Response(serializer.data)
+        data = Lesson.objects.filter(course_header=name)
+        if (data.count() == 0):
+            return Response({
+                'message': 'No Data',
+                'status': 400
+            })
+        else:
+            serializer = LessonSerializer(data)
+            return Response(serializer.data)

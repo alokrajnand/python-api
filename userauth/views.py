@@ -18,6 +18,8 @@ from rest_framework import viewsets
 from .serializer import *
 from .models import *
 from django.core.mail import send_mail
+# importing "random" for random operations
+import random
 
 # ****************************************************
 # USER REGISTRATION PROCESS
@@ -30,35 +32,28 @@ def UserViewSet(request, format=None):
     if request.method == "POST":
         json_parser = JSONParser()
         data = json_parser.parse(request)
-
-        # check if phone number is provided
-        # check name is given
-        # check if a valid email id is provided
-        # check if date of birth is given
-
-        # if all the above condition are valid check phone number exists in the myuser table or not
-        # if phone number exists you are all ready registered  please login or go to forget password
-        # if phone number does not exists  then send the otp and varification link to the email address and redirct the user to the varification page
-
-        # Check if varification is success full
-        # check if phone varification is ok
-        # check if email varification is ok
-        # if both the varification is ok then register the user and redirect to the login page
-
-        # this will happen only when the phone otp and mail id varification will be done
-        ''' send_mail(
-            'Subject here',
-            'Here is the message.',
-            'alok_kumar@nanduniversity.com',
-            ['alokrajnand@gmail.com'],
-            fail_silently=False,
-        ) '''
         serializer = MyUserSerializer(data=data)
         if serializer.is_valid():
             serializer.save()
-            return JsonResponse(serializer.data, status=201)
+            # generate otp
+            otp = GenerateOtp()
+            print(otp)
 
-        return JsonResponse(serializer.errors, status=400)
+            # save otp to the otp table
+            email = serializer.data.get('email_address')
+            print(email)
+            EmailOtp.objects.create(
+                email_address_id=email,
+                email_otp=otp,
+                counter=1
+            )
+            # send mail to the email address
+
+            # redirect to the varification page -- done at fron end
+
+            return JsonResponse(serializer.data, status=201)
+        else:
+            return JsonResponse(serializer.errors, status=400)
 
 
 # **********************************************************
@@ -69,34 +64,81 @@ def UserViewSet(request, format=None):
 class LoginViewSet(ObtainAuthToken):
 
     def post(self, request, *args, **kwargs):
-        serializer = self.serializer_class(
-            data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        user = serializer.validated_data['user']
-        token, created = Token.objects.get_or_create(user=user)
-        return Response({
-            'token': token.key,
-            'username': user.username,
-            'name': user.name
-        })
+        # TO get data from the request object
+        user = request.data.get('username')
+
+        # validate that user exists in the database
+        data = User.objects.filter(email_address=user)
+        if (data.count() == 0):
+            return Response({
+                'message': 'User does not exists',
+                'status': 400
+            })
+        # to check user phone and email is  validated
+        # Login process
+        else:
+            serializer = self.serializer_class(
+                data=request.data, context={'request': request})
+            serializer.is_valid(raise_exception=True)
+            user = serializer.validated_data['user']
+            token, created = Token.objects.get_or_create(user=user)
+            return Response({
+                'token': token.key,
+                'email_address': user.email_address,
+                'name': user.name
+            })
 
 # **********************************************************
-# Logout mechnaism
+# post view for the email varification
 # *********************************************************
 
 
+class VarificationViewSet(viewsets.ViewSet):
+    permission_classes = [AllowAny]
+
+    def post_auth(self, request, *args, **kwargs):
+        # post method to validate the key
+
+        email = request.data.get('email_address')
+        print(email)
+        otp = request.data.get('email_otp')
+        print(otp)
+
+        # get otp from the table
+        data = EmailOtp.objects.get(email_address_id=email)
+        print(data.email_address_id)
+        print(data.email_otp)
+
+        # compare the otp
+        if (otp == data.email_otp):
+            print("otp matches")
+            # create a data in the varification table
+            Varification.objects.create(
+                email_address_id=email, email_varification="done")
+            # remove the entry of otp from the otp table
+            return Response({"every thing is good"})
+        else:
+            print("no match")
+            return Response({"no otp match"})
+
+
 # ******************************************************************
-# To Get profil Information if user is authenticated and logged in
+# sent mail function
 # *******************************************************************
 
 
-class ProfileViewSet(APIView):
-    permission_classes = [IsAuthenticated]
+def SendEmail(email_address):
+    subject = "Email Varification"
+    message = "Please find the key here"
+    from_email = "alok_kumar@nanduniversity.com"
+    to_email = email_address
 
-    def get(self, request, format=None):
-        user = self.request.user
-        print(user)
-        data = UserProfile.objects.filter(username=user)
-        user = UserProfileSerializer(data, many=True)
-        return Response(user.data)
+    send_mail(subject, message, from_email, [to_email], fail_silently=False,)
 
+# ******************************************************************
+# generate OTP function
+# *******************************************************************
+
+
+def GenerateOtp():
+    return (random.randrange(100000, 999999))

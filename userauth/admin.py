@@ -16,8 +16,7 @@ class UserCreationForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'phone_number', 'email_address', 'name',
-                  'date_of_birth')
+        fields = ('email_address', 'phone_number', 'name')
 
     def clean_password2(self):
         # Check that the two password entries match
@@ -45,8 +44,8 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ('username', 'phone_number',  'email_address', 'name',
-                  'date_of_birth', 'password', 'is_active', 'is_admin')
+        fields = ('email_address', 'phone_number', 'name',
+                  'password', 'is_active', 'is_admin')
 
     def clean_password(self):
         # Regardless of what the user provides, return the initial value.
@@ -63,43 +62,31 @@ class UserAdmin(BaseUserAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ('username', 'phone_number', 'email_address', 'name',
-                    'date_of_birth', 'is_active', 'is_staff', 'is_admin')
+    list_display = ('email_address', 'phone_number', 'name',
+                    'is_active', 'is_staff', 'is_admin')
     list_filter = ('is_admin',)
-    search_fields = ('username',)
-    ordering = ('username',)
+    search_fields = ('email_address',)
+    ordering = ('email_address',)
     filter_horizontal = ()
 
     # for the adition of the user from the admin pannel
 
     fieldsets = (
-        (None, {'fields': ('username', 'phone_number', 'email_address', 'name',
-                           'date_of_birth', 'password'), }),
+        (None, {'fields': ('email_address', 'phone_number', 'name',
+                           'password'), }),
     )
     # add_fieldsets is not a standard ModelAdmin attribute. UserAdmin
     # overrides get_fieldsets to use this attribute when creating a user.
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'phone_number', 'email_address', 'name', 'date_of_birth', 'password1', 'password2'),
+            'fields': ('email_address', 'phone_number', 'name',  'password1', 'password2'),
         }),
     )
 
 
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
-
-
-class UserProfileAdmin(BaseUserAdmin):
-    list_display = ('username', 'phone_number',
-                    'email_address', 'name', 'date_of_birth')
-    list_filter = ('username',)
-    search_fields = ('username',)
-    ordering = ('username',)
-    filter_horizontal = ()
-
-
-admin.site.register(UserProfile, UserProfileAdmin)
 
 
 # ... and, since we're not using Django's built-in permissions,

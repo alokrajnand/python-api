@@ -7,5 +7,6 @@ from .views import *
 urlpatterns = [
     path('register/', UserViewSet),
     path('login/', LoginViewSet.as_view()),
-    path('profile/', ProfileViewSet.as_view())
+    path('email_varification/',
+         VarificationViewSet.as_view({'post': 'post_auth'}))
 ]

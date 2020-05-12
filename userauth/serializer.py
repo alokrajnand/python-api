@@ -8,8 +8,7 @@ class MyUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['username', 'phone_number', 'name', 'email_address',
-                  'date_of_birth', 'password']
+        fields = ['email_address', 'phone_number', 'name', 'password']
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
@@ -25,12 +24,20 @@ class MyUserSerializer(serializers.ModelSerializer):
 
 
 # ******************************************************************
-# profile serializer
+# varification serializer
 # *******************************************************************
-
-class UserProfileSerializer(serializers.ModelSerializer):
+class EmailVarificationSerializer(serializers.ModelSerializer):
 
     class Meta:
-        model = UserProfile
-        fields = "__all__"
+        model = Varification
+        fields = '__all__'
 
+
+# ******************************************************************
+# Email OTP  serializer
+# *******************************************************************
+
+class EmailOtpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EmailOtp
+        fields = '__all__'
