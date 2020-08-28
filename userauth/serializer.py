@@ -41,3 +41,13 @@ class EmailOtpSerializer(serializers.ModelSerializer):
     class Meta:
         model = EmailOtp
         fields = '__all__'
+
+
+# ******************************************************************
+# User Profile serializer
+# *******************************************************************
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = '__all__'

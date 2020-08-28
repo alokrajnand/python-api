@@ -20,15 +20,6 @@ class MyUserManager(BaseUserManager):
 
     def create_user(self, email_address, phone_number, name, password=None):
 
-        if not email_address:
-            raise ValueError('Valid Email Addreess is Required')
-
-        if not phone_number:
-            raise ValueError('Valid Phone Number is Required')
-
-        if not name:
-            raise ValueError('You Must have name')
-
         user_obj = self.model(
             email_address=self.normalize_email(email_address),
             phone_number=phone_number,
@@ -101,7 +92,7 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
 # *********************************************************
 
 class Varification(models.Model):
-    email_address = models.ForeignKey(
+    email_address = models.OneToOneField(
         User, to_field='email_address', on_delete=models.CASCADE)
     email_varification = models.CharField(max_length=20, null=True)
     phone_varification = models.CharField(max_length=20, null=True)
@@ -113,7 +104,7 @@ class Varification(models.Model):
 
 
 class EmailOtp(models.Model):
-    email_address = models.ForeignKey(
+    email_address = models.OneToOneField(
         User, to_field='email_address', on_delete=models.CASCADE)
     email_otp = models.IntegerField()
     counter = models.IntegerField()
@@ -121,7 +112,36 @@ class EmailOtp(models.Model):
     def __str__(self):
         return self.__all__
 
-
 # **********************************************************
 # Profile Model
 # *********************************************************
+
+
+class Profile(models.Model):
+    email_address = models.OneToOneField(
+        User, to_field='email_address', on_delete=models.CASCADE)
+    name = models.CharField(max_length=200, null=True)
+    phone_regex = RegexValidator(
+        regex=r'^\+?1?\d{9,15}$', message="phone number is not valid")
+    phone_number = models.CharField(
+        validators=[phone_regex], max_length=17, unique=True)
+    user_designation = models.CharField(max_length=200, null=True)
+    user_tag_line = models.CharField(max_length=200, null=True)
+    user_tag_line_desc = models.CharField(max_length=300, null=True)
+    user_date_of_birth = models.DateField(null=True)
+    user_profile_pic_link = models.CharField(max_length=200, null=True)
+    user_banner_pic_link = models.CharField(max_length=200, null=True)
+    user_address = models.CharField(max_length=200, null=True)
+    user_city = models.CharField(max_length=60, null=True)
+    user_state = models.CharField(max_length=60, null=True)
+    user_country = models.CharField(max_length=60, null=True)
+    user_twitter_link = models.CharField(max_length=200, null=True)
+    user_git_hub_link = models.CharField(max_length=200, null=True)
+    user_linkdin_link = models.CharField(max_length=200, null=True)
+    user_faebook_link = models.CharField(max_length=200, null=True)
+    user_instagram_link = models.CharField(max_length=200, null=True)
+    created_dt = models.DateTimeField(default=datetime.now, null=True)
+    updated_dt = models.DateTimeField(default=datetime.now, null=True)
+
+    def __str__(self):
+        return self.__all__
